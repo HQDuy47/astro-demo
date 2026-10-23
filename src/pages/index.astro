@@ -1,0 +1,166 @@
+---
+// ponytail: dữ liệu khai báo ngay tại đây; tách ra file/CMS khi nội dung lớn hơn
+const features = [
+	{ icon: '⚡', title: 'Siêu nhanh', text: 'Trang được render sẵn thành HTML, tải gần như tức thì trên mọi thiết bị.' },
+	{ icon: '🔍', title: 'Chuẩn SEO', text: 'HTML sạch, không phụ thuộc JavaScript, công cụ tìm kiếm đọc được ngay.' },
+	{ icon: '🧩', title: 'Linh hoạt', text: 'Dùng React, Vue, Svelte hoặc chỉ HTML thuần — tùy bạn chọn.' },
+];
+
+const plans = [
+	{ name: 'Miễn phí', price: '0đ', items: ['1 dự án', 'Tên miền phụ', 'Hỗ trợ cộng đồng'] },
+	{ name: 'Pro', price: '199.000đ', items: ['Không giới hạn dự án', 'Tên miền riêng', 'Hỗ trợ ưu tiên'], highlight: true },
+	{ name: 'Doanh nghiệp', price: 'Liên hệ', items: ['SLA 99.9%', 'SSO & phân quyền', 'Hỗ trợ 24/7'] },
+];
+---
+
+<html lang="vi">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>Nova — Xây website nhanh hơn</title>
+		<meta name="description" content="Nova giúp bạn xây website nhanh, chuẩn SEO, không cần cấu hình phức tạp." />
+	</head>
+	<body>
+		<header class="container nav">
+			<a href="/" class="logo">✦ Nova</a>
+			<nav>
+				<a href="#features">Tính năng</a>
+				<a href="#pricing">Bảng giá</a>
+				<a href="#signup" class="btn btn-sm">Bắt đầu</a>
+			</nav>
+		</header>
+
+		<section class="hero container">
+			<span class="badge">Mới · Phiên bản 2.0</span>
+			<h1>Xây website <span class="grad">nhanh hơn</span>,<br />không cần đau đầu.</h1>
+			<p class="lead">Nova biến ý tưởng thành trang web hoàn chỉnh trong vài phút. Nhanh, đẹp và chuẩn SEO ngay từ đầu.</p>
+			<div class="actions">
+				<a href="#signup" class="btn">Dùng thử miễn phí</a>
+				<a href="#features" class="btn btn-ghost">Tìm hiểu thêm →</a>
+			</div>
+		</section>
+
+		<section id="features" class="container section">
+			<h2>Mọi thứ bạn cần</h2>
+			<div class="grid">
+				{features.map((f) => (
+					<article class="card">
+						<div class="icon">{f.icon}</div>
+						<h3>{f.title}</h3>
+						<p>{f.text}</p>
+					</article>
+				))}
+			</div>
+		</section>
+
+		<section id="pricing" class="container section">
+			<h2>Bảng giá đơn giản</h2>
+			<div class="grid">
+				{plans.map((p) => (
+					<article class:list={['card', { featured: p.highlight }]}>
+						<h3>{p.name}</h3>
+						<p class="price">{p.price}{p.price.endsWith('đ') && p.price !== '0đ' && <small>/tháng</small>}</p>
+						<ul>{p.items.map((i) => <li>✓ {i}</li>)}</ul>
+						<a href="#signup" class:list={['btn', { 'btn-ghost': !p.highlight }]}>Chọn gói</a>
+					</article>
+				))}
+			</div>
+		</section>
+
+		<section id="signup" class="container section cta">
+			<h2>Sẵn sàng bắt đầu?</h2>
+			<p>Nhận thông tin sớm nhất khi Nova ra mắt.</p>
+			<form class="signup">
+				<label for="email" class="sr-only">Email</label>
+				<input id="email" type="email" required placeholder="email@cua-ban.com" />
+				<button class="btn" type="submit">Đăng ký</button>
+			</form>
+			<p class="thanks" hidden>🎉 Cảm ơn! Chúng tôi sẽ liên hệ sớm.</p>
+		</section>
+
+		<footer class="container footer">© {new Date().getFullYear()} Nova. Làm bằng Astro.</footer>
+
+		<script>
+			// ponytail: chỉ hiện lời cảm ơn; nối vào API/Formspree khi cần lưu email thật
+			const form = document.querySelector<HTMLFormElement>('.signup')!;
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				form.hidden = true;
+				document.querySelector<HTMLElement>('.thanks')!.hidden = false;
+			});
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--bg: #ffffff;
+		--fg: #0f172a;
+		--muted: #64748b;
+		--card: #f8fafc;
+		--border: #e2e8f0;
+		--accent: #7c3aed;
+		--accent-2: #ec4899;
+	}
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--bg: #0b0b12;
+			--fg: #f1f5f9;
+			--muted: #94a3b8;
+			--card: #151522;
+			--border: #26263a;
+		}
+	}
+	* { box-sizing: border-box; }
+	html { scroll-behavior: smooth; }
+	body { margin: 0; background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; line-height: 1.6; }
+	a { color: inherit; text-decoration: none; }
+	.container { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+	.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+	.nav { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; }
+	.nav nav { display: flex; gap: 20px; align-items: center; }
+	.nav nav a:not(.btn) { color: var(--muted); }
+	.nav nav a:not(.btn):hover { color: var(--fg); }
+	.logo { font-weight: 800; font-size: 1.25rem; }
+
+	.btn { display: inline-block; padding: 12px 22px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: transform .15s, opacity .15s; }
+	.btn:hover { transform: translateY(-1px); opacity: .9; }
+	.btn-ghost { background: transparent; color: var(--fg); border-color: var(--border); }
+	.btn-sm { padding: 8px 16px; }
+
+	.hero { text-align: center; padding-block: 80px 64px; }
+	.badge { display: inline-block; padding: 4px 12px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .875rem; }
+	h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.1; margin: 20px 0; letter-spacing: -.02em; }
+	.grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+	.lead { color: var(--muted); font-size: 1.15rem; max-width: 560px; margin: 0 auto 32px; }
+	.actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+	.section { padding-block: 64px; }
+	h2 { text-align: center; font-size: clamp(1.6rem, 4vw, 2.4rem); margin: 0 0 40px; }
+	.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+	.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; display: flex; flex-direction: column; }
+	.card h3 { margin: 8px 0; }
+	.card p { color: var(--muted); margin: 0; }
+	.icon { font-size: 2rem; }
+
+	.featured { border: 2px solid var(--accent); }
+	.price { font-size: 2rem; font-weight: 800; color: var(--fg) !important; margin: 8px 0 16px !important; }
+	.price small { font-size: 1rem; color: var(--muted); font-weight: 400; }
+	.card ul { list-style: none; padding: 0; margin: 0 0 24px; flex: 1; }
+	.card li { padding: 4px 0; }
+	.card .btn { text-align: center; }
+
+	.cta { text-align: center; }
+	.cta h2 { margin-bottom: 8px; }
+	.cta p { color: var(--muted); }
+	.signup { display: flex; gap: 8px; max-width: 440px; margin: 24px auto 0; flex-wrap: wrap; }
+	.signup input { flex: 1; min-width: 200px; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--fg); font-size: 1rem; }
+
+	.footer { text-align: center; color: var(--muted); padding-block: 32px; border-top: 1px solid var(--border); font-size: .875rem; }
+
+	@media (max-width: 560px) {
+		.nav nav a:not(.btn) { display: none; }
+	}
+</style>
